@@ -2,7 +2,7 @@ const express=require('express')
 const router=new express.Router()
 const {verifyToken,verifyTokenAndAuthorization,verifyTokenAdmin}=require('../middleware/verifyToken')
 const Order = require('../models/Order')
-
+//USER ADD ORDER
 router.post('/Order',verifyTokenAndAuthorization,async(req,res)=>{
 const order=new Order(req.body)
 try{
@@ -18,9 +18,7 @@ res.status(201).send(order)
 })
 
 
-
-
-
+//USER DELETE ORDER
 
 router.delete('/order/:id',verifyTokenAndAuthorization,async(req,res)=>{
 await Order.findByIdAndDelete(req.params.id)
@@ -34,6 +32,8 @@ try{
 
 
 })
+//USER UPDATE ORDER
+
 router.patch('/order/:id',verifyTokenAndAuthorization, async (req, res) => {
 
     const updates = Object.keys(req.body)
@@ -54,6 +54,7 @@ router.patch('/order/:id',verifyTokenAndAuthorization, async (req, res) => {
         res.status(400).send(e)
     }
 })
+//USER GET ORDER
 router.get('/order/find/:id',verifyTokenAndAuthorization,async(req,res)=>{
     try{
         const Order= await Order.find({userID:req.params.userID})
@@ -66,8 +67,9 @@ router.get('/order/find/:id',verifyTokenAndAuthorization,async(req,res)=>{
     
     
     })
+      //ADMIN GET USER ORDERS
 
-    router.get('/Order',verifyTokenAdmin,async(req,res)=>{
+    router.get('/Orders',verifyTokenAdmin,async(req,res)=>{
 
          try{
         
@@ -85,7 +87,7 @@ router.get('/order/find/:id',verifyTokenAndAuthorization,async(req,res)=>{
          
          })
       
-      
+      //ADMIN GET SITE INCOMES
          router.get('/incomes', verifyTokenAdmin, async (req, res) => {
             const date = new Date();
             const lastMonth = new Date(date.setMonth(date.getMonth() - 1));

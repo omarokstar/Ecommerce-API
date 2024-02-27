@@ -2,6 +2,7 @@ const express=require('express')
 const router=new express.Router()
 const Cart=require('../models/Cart')
 const {verifyToken,verifyTokenAndAuthorization,verifyTokenAdmin}=require('../middleware/verifyToken')
+//USER ADD ORDER TO CART
 
 router.post('/Cart',verifyTokenAndAuthorization,async(req,res)=>{
 const cart=new Cart(req.body)
@@ -21,6 +22,7 @@ res.status(201).send(cart)
 
 
 
+//USER DELETE ORDER FROM CART
 
 router.delete('/cart/:id',verifyTokenAndAuthorization,async(req,res)=>{
 await Cart.findByIdAndDelete(req.params.id)
@@ -34,6 +36,8 @@ try{
 
 
 })
+//USER UPDATE ORDER FROM CART
+
 router.patch('/cart/:id',verifyTokenAndAuthorization, async (req, res) => {
 
     const updates = Object.keys(req.body)
@@ -54,37 +58,42 @@ router.patch('/cart/:id',verifyTokenAndAuthorization, async (req, res) => {
         res.status(400).send(e)
     }
 })
-router.get('/cart/find/:id',verifyTokenAndAuthorization,async(req,res)=>{
-    try{
-        const Cart= await Cart.findOne({userID:req.params.userID})
-        res.status(200).send(Cart)
-    
-    }catch(e){
-         res.status(500).send(e)
-         console.log(e)
-    }
-    
-    
-    })
 
-    router.get('/Carts',verifyTokenAdmin,async(req,res)=>{
-
-         try{
+    //USER FIND ORDER FROM CART
+    
+    router.get('/cart/find/:id',verifyTokenAndAuthorization,async(req,res)=>{
+        try{
+            const Cart= await Cart.findOne({userID:req.params.userID})
+            res.status(200).send(Cart)
         
+        }catch(e){
+             res.status(500).send(e)
+             console.log(e)
+        }
+        
+        
+        })
+        //USER GET ALL ORDERS FROM CART
 
-         const Cart=await Cart.find()
-     
-             res.status(200).send(Cart)
+        router.get('/Carts',verifyTokenAdmin,async(req,res)=>{
+    
+             try{
+            
+    
+             const Cart=await Cart.find()
          
-         }catch(e){
-              res.status(500).send(e)
-              console.log(e)
-         }
-         
+                 res.status(200).send(Cart)
+             
+             }catch(e){
+                  res.status(500).send(e)
+                  console.log(e)
+             }
+             
+    
+             
+             })
 
-         
-         })
+    
+    module.exports = router
+    
 
-     
-
-module.exports = router
