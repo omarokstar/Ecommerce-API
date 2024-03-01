@@ -3,9 +3,10 @@ const router=new express.Router()
 const User=require('../models/User')
 const {verifyToken}=require('../middleware/verifyToken')
 const{sendWelcomeEmail}=require('../mail/email')
+//    // USER REGISTERATION
+
 router.post("/users/register",async(req,res)=>{
     const user=new User(req.body)
-    
 try{
 await user.save()
 const token = await user.generateAuthToken()
@@ -20,6 +21,8 @@ res.status(400).send(e)
 }
 
 })
+   // ACCOUNT CONFIRMATION
+
 router.get('/confirm/:token', async (req, res) => {
     try {
         const token =await User.findOne({token:req.params.token})
@@ -31,6 +34,7 @@ router.get('/confirm/:token', async (req, res) => {
     }
 })
 
+   // USER LOG IN
 
 router.post('/users/login', async (req, res) => {
     try {
