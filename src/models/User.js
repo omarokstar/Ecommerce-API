@@ -14,9 +14,7 @@ const userSchema=new mongoose.Schema({
         required: true,
         trim: true,
         lowercase: true,
-        validate(value) {
-            if (value.toLowerCase().includes('password')) {
-                throw new Error('Password cannot contain "password"')
+    
             }
         }
     },
@@ -25,6 +23,9 @@ const userSchema=new mongoose.Schema({
         required: true,
         minlength: 7,
         trim: true,
+        validate(value) {
+            if (value.toLowerCase().includes('password')) {
+                throw new Error('Password cannot contain "password"')
     },
     isAdmin:{
         type:Boolean,
