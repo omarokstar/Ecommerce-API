@@ -47,7 +47,11 @@ router.get('/users/stats',verifyTokenAdmin,async(req,res)=>{
 const date=new Date()
 const lastyear=new Date(date.setFullYear(date.getFullYear()-1));
 try{
-const data= await User.aggregate([{
+
+const totalUsers = await User.countDocuments(); 
+
+const data= await User.aggregate([
+    {
 $match:{createdAt:{$gte:lastyear}}},{
 $project: {
     month: { $month: { $toDate: "$createdAt" } }
@@ -56,8 +60,11 @@ $project: {
     _id:"$month",
     total:{$sum:1}
 }}])
-
-res.status(200).send(data)
+const result={
+    stats:data,
+    total:totalUsers
+}
+res.status(200).send(result)
 }
 catch(e){
 res.status(500).send(e)

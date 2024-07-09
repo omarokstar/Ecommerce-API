@@ -4,6 +4,7 @@ const authRouter=require("./routers/auth")
 const ProductRouter = require("./routers/product")
 const OrderRouter=require('./routers/order')
 const CartRouter=require('./routers/cart')
+require('dotenv').config();
 const port=process.env.PORT
 require('./db/mongoose')
 

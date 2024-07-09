@@ -34,31 +34,36 @@ try{
 })
 //USER UPDATE ORDER
 
-router.patch('/order/:id',verifyTokenAndAuthorization, async (req, res) => {
-
-    const updates = Object.keys(req.body)
-    const allowedUpdates = ['title', 'desc', 'categories','size','color','Price']
-    const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
-
+router.patch('/order/:id', verifyTokenAndAuthorization, async (req, res) => {
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['products']; // Assuming 'products' is a field in the Cart model
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+  
     if (!isValidOperation) {
-        return res.status(400).send({ error: 'Invalid updates!' })
+      return res.status(400).send({ error: 'Invalid updates!' });
     }
-
-    try 
-    {
-        const order=await Order.findById(req.params.id)
-        updates.forEach((update) => product[update] = req.body[update])
-        await order.save()
-        res.send(order)
+  
+    try {
+      const order = await Order.findById(req.params.id);
+  
+      if (!order) {
+        return res.status(404).send({ error: 'Cart not found' });
+      }
+  
+      updates.forEach((update) => {
+        order[update] = req.body[update];
+      });
+      await cart.save();
+      res.send(order);
     } catch (e) {
-        res.status(400).send(e)
+      res.status(400).send(e);
     }
-})
+  });
 //USER GET ORDER
 router.get('/order/find/:id',verifyTokenAndAuthorization,async(req,res)=>{
     try{
-        const Order= await Order.find({userID:req.params.userID})
-        res.status(200).send(Order)
+        const order= await Order.find({userID:req.params.userID})
+        res.status(200).send(order)
     
     }catch(e){
          res.status(500).send(e)
@@ -74,9 +79,9 @@ router.get('/order/find/:id',verifyTokenAndAuthorization,async(req,res)=>{
          try{
         
 
-         const Order=await Order.find()
+         const order=await Order.find()
      
-             res.status(200).send(Order)
+             res.status(200).send(order)
          
          }catch(e){
               res.status(500).send(e)
