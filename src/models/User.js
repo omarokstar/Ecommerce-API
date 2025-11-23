@@ -13,14 +13,7 @@ const userSchema=new mongoose.Schema({
         unique: true,
         required: true,
         trim: true,
-        lowercase: true,
-<<<<<<< HEAD
-      
-=======
-    
-            }
-        }
->>>>>>> e577055a64ac8333e9afad960ce1fc3a81ef4170
+        lowercase: true,    
     },
     password: {
         type: String,
@@ -30,11 +23,8 @@ const userSchema=new mongoose.Schema({
         validate(value) {
             if (value.toLowerCase().includes('password')) {
                 throw new Error('Password cannot contain "password"')
-<<<<<<< HEAD
             }
         },
-=======
->>>>>>> e577055a64ac8333e9afad960ce1fc3a81ef4170
     },
     isAdmin:{
         type:Boolean,
